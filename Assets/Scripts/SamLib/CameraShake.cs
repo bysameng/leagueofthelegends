@@ -18,7 +18,7 @@ public class CameraShake : MonoBehaviour {
 	}
 	
 	void Start(){
-		fovDamper = new FloatDamper(12f, .8f);
+		fovDamper = new FloatDamper(Camera.main.fieldOfView, .8f);
 	}
 	
 	public void Shake(float duration, float strength){
