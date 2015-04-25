@@ -1,19 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using InControl;
 
 public class Lobby : MonoBehaviour {
 
-	// Use this for initialization
+	PlayerManager manager;
+
+	List<GameObject> enableMessages;
+
+
+
 	void Start () {
-	
+		manager = PlayerManager.main;
+		enableMessages = new List<GameObject>();
+		for(int i = 0; i < manager.Players.Length; i++){
+
+		}
 	}
+
 	
-	// Update is called once per frame
 	void Update () {
-	
+		for(int i = 0; i < manager.Players.Length; i++){
+		}
 	}
 
-	void DrawMenu(){
 
-	}
+
+
+
+
 }

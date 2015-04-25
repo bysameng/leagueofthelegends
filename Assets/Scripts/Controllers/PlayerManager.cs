@@ -6,11 +6,14 @@ using InControl;
 public class PlayerManager : MonoBehaviour {
 	public static PlayerManager main;
 
-	protected bool lobbying;
 	protected List<Player> players;
+	public Player[] Players{get{return players.ToArray();}}
+
+	protected bool lobbying = false;
 	protected int playerCount = 2;
 
 	public void StartLobby(){
+		Debug.Log("Starting lobby");
 		lobbying = true;
 	}
 
@@ -23,7 +26,6 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	void Start(){
-		lobbying = false;
 		SetupPlayers();
 	}
 
@@ -35,7 +37,6 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
-
 	void Update () {
 		if (lobbying){
 			LobbyUpdate();
@@ -45,12 +46,24 @@ public class PlayerManager : MonoBehaviour {
 	//check for devices
 	void LobbyUpdate(){
 		//check for input on all devices
-		if (InputManager.ActiveDevice.Action1.WasPressed){
-			InputDevice active = InputManager.ActiveDevice;
+		InputDevice active = InputManager.ActiveDevice;
+		if (active.Action1.WasPressed){
 
 			//enable this device if it's not enabled.
-			if (!DeviceEnabled(active))
-				EnableDevice(active);
+			if (GetPlayer(active) == null){
+				bool success = EnableDevice(active);
+				if (success)
+				Debug.Log("Enabled device.");
+			}
+		}
+
+		//disable player if B is pressed
+		else if (active.Action2.WasPressed){
+			if (GetPlayer(active) != null){
+				bool success = DisableDevice(active);
+				if (success)
+				Debug.Log("Disabled device.");
+			}
 		}
 	}
 
@@ -63,7 +76,17 @@ public class PlayerManager : MonoBehaviour {
 
 		//if found, let's attach it
 		if (player != null){
-			player.inputDevice = device;
+			player.EnablePlayer(device);
+			return true;
+		}
+		return false;
+	}
+
+
+	bool DisableDevice(InputDevice device){
+		Player p = GetPlayer(device);
+		if (p != null){
+			p.Reset();
 			return true;
 		}
 		return false;
@@ -83,10 +106,12 @@ public class PlayerManager : MonoBehaviour {
 
 
 	//check if a device is already used
-	bool DeviceEnabled(InputDevice device){
+	Player GetPlayer(InputDevice device){
 		for(int i= 0; i < players.Count; i++){
-			if (players[i].inputDevice == device) return true;
+			if (players[i].inputDevice == device) return players[i];
 		}
-		return false;
+		return null;
 	}
+
+	
 }

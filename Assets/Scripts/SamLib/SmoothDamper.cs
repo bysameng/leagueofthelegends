@@ -17,7 +17,8 @@ public class SmoothDamper : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		for (int i = 0; i < dampers.Count; i++){
-			dampers[i].Update();
+			if (dampers[i].enabled)
+				dampers[i].Update();
 		}
 	}
 
@@ -44,6 +45,7 @@ public abstract class ValueDamper{
 	public ValueDamper(){SmoothDamper.main.AddDamper(this);}
 	public abstract void Update();
 	public bool isUnscaled = false;
+	public bool enabled = true;
 }
 
 public class FloatDamper : ValueDamper{
@@ -58,7 +60,7 @@ public class FloatDamper : ValueDamper{
 	}
 	public override void Update(){
 		if (Mathf.Abs(Value - Target) > .01f)
-			Value = Mathf.SmoothDamp(Value, Target, ref velocity, Speed);
+			Value = Mathf.SmoothDamp(Value, Target, ref velocity, Speed, Mathf.Infinity, isUnscaled ? Time.unscaledDeltaTime : Time.deltaTime);
 	}
 }
 
@@ -75,7 +77,7 @@ public class Vector3Damper : ValueDamper{
 	private Vector3 velocity;
 	public override void Update(){
 		if (Vector3.Distance(Value, Target) > .01f)
-			Value = Vector3.SmoothDamp(Value, Target, ref velocity, Speed);
+			Value = Vector3.SmoothDamp(Value, Target, ref velocity, Speed, Mathf.Infinity, isUnscaled ? Time.unscaledDeltaTime : Time.deltaTime);
 	}
 }
 
@@ -92,6 +94,6 @@ public class ColorDamper : ValueDamper{
 	private Vector4 velocity;
 	public override void Update(){
 		if (Vector4.Distance(Value, Target) > .01f)
-			Value = Utilities.Vector4SmoothDamp(Value, Target, ref velocity, Speed);
+			Value = Utilities.Vector4SmoothDamp(Value, Target, ref velocity, Speed, Mathf.Infinity, isUnscaled ? Time.unscaledDeltaTime : Time.deltaTime);
 	}
 }

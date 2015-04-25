@@ -20,10 +20,12 @@ public class Controller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rbody = GetComponent<Rigidbody>();
+		rbody.isKinematic = false;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if (inputDevice == null) return;
 		CheckInput();
 		CalculateMovement();
 		DoMovement();

@@ -26,16 +26,19 @@ public static class Utilities {
 		float a = Mathf.SmoothStep(from.a, to.a, t);
 		return new Color(r, g, b, a);
 	}
-
 	public static Vector4 Vector4SmoothDampUnScaled(Vector4 current, Vector4 target, ref Vector4 velocity, float smoothTime){
+		return Vector4SmoothDamp(current, target, ref velocity, smoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
+		
+	}
+	public static Vector4 Vector4SmoothDamp(Vector4 current, Vector4 target, ref Vector4 velocity, float smoothTime, float maxSpeed, float deltaTime){
 		Vector4 ans = Vector4.zero;
-		ans.x = Mathf.SmoothDamp(current.x, target.x, ref velocity.x, smoothTime, Mathf.Infinity, Utilities.unscaledDeltaTime);
-		ans.y = Mathf.SmoothDamp(current.y, target.y, ref velocity.y, smoothTime, Mathf.Infinity, Utilities.unscaledDeltaTime);
-		ans.z = Mathf.SmoothDamp(current.z, target.z, ref velocity.z, smoothTime, Mathf.Infinity, Utilities.unscaledDeltaTime);
-		ans.w = Mathf.SmoothDamp(current.w, target.w, ref velocity.w, smoothTime, Mathf.Infinity, Utilities.unscaledDeltaTime);
+		ans.x = Mathf.SmoothDamp(current.x, target.x, ref velocity.x, smoothTime, maxSpeed, deltaTime);
+		ans.y = Mathf.SmoothDamp(current.y, target.y, ref velocity.y, smoothTime, maxSpeed, deltaTime);
+		ans.z = Mathf.SmoothDamp(current.z, target.z, ref velocity.z, smoothTime, maxSpeed, deltaTime);
+		ans.w = Mathf.SmoothDamp(current.w, target.w, ref velocity.w, smoothTime, maxSpeed, deltaTime);
 		return ans;
 	}
-
+	
 	public static Vector4 Vector4SmoothDamp(Vector4 current, Vector4 target, ref Vector4 velocity, float smoothTime){
 		Vector4 ans = Vector4.zero;
 		ans.x = Mathf.SmoothDamp(current.x, target.x, ref velocity.x, smoothTime);
@@ -43,25 +46,6 @@ public static class Utilities {
 		ans.z = Mathf.SmoothDamp(current.z, target.z, ref velocity.z, smoothTime);
 		ans.w = Mathf.SmoothDamp(current.w, target.w, ref velocity.w, smoothTime);
 		return ans;
-	}
-
-
-	public static Vector4 Vector4SmoothDamp(Vector4 current, Vector4 target, ref float velocity, float smoothTime){
-		bool magGreater = (target.magnitude > current.magnitude);
-		float acceleration = Mathf.Abs((target-current).magnitude) / (smoothTime*smoothTime / 4);
-		velocity += acceleration;
-		float maxvelocity = Mathf.Abs((target-current).magnitude / smoothTime);
-		if (velocity > maxvelocity) velocity = maxvelocity;
-		Vector4 endPos = Vector4.MoveTowards(current, target, velocity * Time.deltaTime);
-		if (magGreater){
-			if (endPos.magnitude > target.magnitude){
-				return target;
-			}
-		}
-		else if (endPos.magnitude < target.magnitude){
-			return target;
-		}
-		return endPos;
 	}
 
 	public static Vector2 Vector2SmoothStep(Vector2 from, Vector2 to, float t){
