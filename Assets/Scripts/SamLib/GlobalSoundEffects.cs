@@ -51,25 +51,25 @@ public class GlobalSoundEffects : MonoBehaviour {
 		return PlayClipAtPoint(name, Vector3.zero);
 	}
 
-	public AudioSource PlayClipAtPoint(string name, Vector3 position, string group, float volume = .2f){
+	public AudioSource PlayClipAtPoint(string name, Vector3 position, string group, float volume = .5f){
 		AudioMixerGroup g = GetGroup(group);
 		AudioSource s = PlayClipAtPoint(name, position, g, volume);
 		return s;
 	}
 
-	public AudioSource PlayClipAtPoint(string name, Vector3 position, AudioMixerGroup group, float volume = .2f){
+	public AudioSource PlayClipAtPoint(string name, Vector3 position, AudioMixerGroup group, float volume = .5f){
 		AudioSource s = PlayClipAtPoint(name, position, volume);
 		s.outputAudioMixerGroup = group;
 		return s;
 	}
 
-	public AudioSource PlayClipAtPoint(string name, Vector3 position, float min, float max, float volume = .2f){
+	public AudioSource PlayClipAtPoint(string name, Vector3 position, float min, float max, float volume = .5f){
 		AudioSource s = PlayClipAtPoint(name, position, volume);
 		s.pitch = Random.Range(min, max);
 		return s;
 	}
 
-	public AudioSource PlayClipAtPoint(string name, Vector3 position, float volume = .2f){
+	public AudioSource PlayClipAtPoint(string name, Vector3 position, float volume = .5f){
 		AudioClip clip;
 		GetClip(name, out clip);
 		return this.PlayClipAtPoint(clip, position, volume);
@@ -80,11 +80,12 @@ public class GlobalSoundEffects : MonoBehaviour {
 		return volume;
 	}
 
-	public AudioSource PlayClipAtPoint(AudioClip clip, Vector3 position, float pitch = 1f, float volume = .2f){
+	public AudioSource PlayClipAtPoint(AudioClip clip, Vector3 position, float pitch = 1f, float volume = .5f){
 		GameObject g = new GameObject("One Shot Audio");
 		g.transform.position = position;
 		if (g == null) return null;
 		AudioSource audio = g.AddComponent<AudioSource>();
+		audio.outputAudioMixerGroup = GetGroup("SFX");
 		audio.clip = clip;
 		audio.volume = volume;
 		audio.pitch = pitch;

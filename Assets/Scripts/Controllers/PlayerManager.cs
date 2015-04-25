@@ -54,6 +54,7 @@ public class PlayerManager : MonoBehaviour {
 				bool success = EnableDevice(active);
 				if (success)
 				Debug.Log("Enabled device.");
+				GlobalSoundEffects.main.PlayClipAtPoint("inception");
 			}
 		}
 

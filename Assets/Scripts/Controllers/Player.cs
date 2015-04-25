@@ -4,6 +4,7 @@ using InControl;
 
 public enum PlayerType{Dog, Human, Unassigned};
 public class Player {
+	public bool isActive{get{return inputDevice != null;}}
 	public InputDevice inputDevice{get; private set;}
 	public PlayerType playerType = PlayerType.Unassigned;
 

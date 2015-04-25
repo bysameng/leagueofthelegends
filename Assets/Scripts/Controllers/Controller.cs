@@ -11,25 +11,40 @@ public class Controller : MonoBehaviour {
 	protected float dampingFactor = .5f;
 	protected float slowDownFactor = .95f;
 
+	protected float rotationSpeed = 720;
+
 	new protected Rigidbody rbody;
 	protected Player player;
 	protected InputDevice inputDevice{
 		get{return player.inputDevice;}
 	}
 
+	protected InputControl aInput{get{return inputDevice.Action1;}}
+	protected InputControl bInput{get{return inputDevice.Action2;}}
+
+	protected ButtonPrompt prompt;
+
+
 	// Use this for initialization
-	void Start () {
+	public virtual void Start () {
 		rbody = GetComponent<Rigidbody>();
 		rbody.isKinematic = false;
 	}
 
 	// Update is called once per frame
-	void Update () {
+	public virtual void Update () {
 		if (inputDevice == null) return;
 		CheckInput();
+		DoLogic();
 		CalculateMovement();
 		DoMovement();
 	}
+
+	public void SetPlayer(Player player){
+		this.player = player;
+	}
+
+	protected virtual void DoLogic(){}
 
 	protected virtual void CheckInput(){
 		currentInput = new Vector3(inputDevice.Direction.X, 0, inputDevice.Direction.Y);
@@ -48,8 +63,10 @@ public class Controller : MonoBehaviour {
 		movement = Vector3.ClampMagnitude(movement, maxSpeed);
 	}
 
-	protected void DoMovement(){
+	protected virtual void DoMovement(){
 		rbody.MovePosition(rbody.position + movement * Time.deltaTime);
+		if (movement.magnitude > 1f)
+			rbody.MoveRotation(Quaternion.RotateTowards(Quaternion.LookRotation(transform.forward), Quaternion.LookRotation(movement), rotationSpeed * Time.deltaTime));
 	}
 
 
