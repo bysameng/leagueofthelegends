@@ -65,8 +65,9 @@ public class Controller : MonoBehaviour {
 
 	protected virtual void DoMovement(){
 		rbody.MovePosition(rbody.position + movement * Time.deltaTime);
-		if (movement.magnitude > 1f)
+		if (movement.magnitude > .5f){
 			rbody.MoveRotation(Quaternion.RotateTowards(Quaternion.LookRotation(transform.forward), Quaternion.LookRotation(movement), rotationSpeed * Time.deltaTime));
+		}
 	}
 
 

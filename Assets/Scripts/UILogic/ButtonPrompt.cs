@@ -11,6 +11,8 @@ public class ButtonPrompt : MonoBehaviour {
 
 	private bool setPos = false;
 
+	public GameObject target;
+
 	void Awake(){
 		transform.rotation = Camera.main.transform.rotation;
 		positionDamper = new Vector3Damper(transform.position, .1f);
@@ -30,6 +32,7 @@ public class ButtonPrompt : MonoBehaviour {
 	}
 
 	public void ClearPosition(){
+		target = null;
 		fader.fullColor = new Color(1f,1f,1f,0f);
 		positionDamper.Target = transform.position + hoverBelowPos;
 		setPos = false;
@@ -39,4 +42,15 @@ public class ButtonPrompt : MonoBehaviour {
 	void Update () {
 		transform.position = positionDamper.Value;
 	}
+
+	public void FlashColor(Color color){
+		fader.fullColor = color;
+	}
+
+	public void FlashColor(){
+		fader.fullColor = Color.blue;
+	}
+
+
+
 }

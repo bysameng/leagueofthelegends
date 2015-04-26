@@ -4,8 +4,15 @@ using System.Collections;
 public class GameLogic : MonoBehaviour {
 
 	PlayerManager manager = PlayerManager.main;
+	ShitManager shitManager;
+
 
 	public void StartGame(){
+		Debug.Log("Starting gamelogic...");
+
+		if (shitManager != null) Destroy (shitManager);
+		shitManager = gameObject.AddComponent<ShitManager>();
+
 		SpawnLevel();
 		foreach(var p in manager.Players){
 			SpawnPlayer(p);

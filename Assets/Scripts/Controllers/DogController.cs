@@ -3,13 +3,21 @@ using System.Collections;
 
 public class DogController : Controller {
 
+	public Animator animator;
+
+	float shitSpeed = 1f;
 	public float StoredShit{get; private set;}
 	private bool shitting = false;
 
 	private float shitCooldown = .5f;
 	private float shitCooldownTimer;
 
+	private float poopDelay = .1f;
+	private float poopDelayTimer;
+
 	private ColorFader fader;
+
+	private ShitPile currentShitPile;
 
 
 	public override void Start(){
@@ -29,23 +37,40 @@ public class DogController : Controller {
 			currentInput = Vector3.zero;
 		}
 
-		if (aInput.IsPressed && movement.magnitude < 1f){
-			Debug.Log("Shitting");
+		if (inputDevice.Action1.IsPressed){
+			currentInput = Vector3.zero;
+		}
+
+		if (inputDevice.Action1.IsPressed && !shitting && movement.magnitude < 1f){
 			shitting = true;
+			Poop();
+		}
+
+
+		if (shitting && inputDevice.Action1.IsPressed){
+			if (poopDelayTimer > 0){
+				poopDelayTimer -= Time.deltaTime;
+			}
+			else{
+				Poop();
+				poopDelayTimer = poopDelay;
+			}
+//			currentShitPile.magnitude += shitSpeed * Time.deltaTime;
+			currentInput = Vector3.zero;
+			fader.fullColor = Color.white;
+		}
+		else if (shitting && !inputDevice.Action1.IsPressed){
+			shitting = false;
+			fader.fullColor = Color.black;
 			shitCooldownTimer = shitCooldown;
 		}
 
-		if (shitting && !aInput.IsPressed){
-			shitting = false;
-		}
 
-		if (shitting){
-			currentInput = Vector3.zero;
-			fader.fullColor = Color.red;
-		}
-		else{
-			fader.fullColor = Color.black;
-		}
+		animator.speed = movement.magnitude;
+	}
+
+	void Poop(){
+		currentShitPile = ShitManager.main.SpawnShit(transform.position - transform.forward/6f);
 	}
 
 }

@@ -8,10 +8,14 @@ public class HumanController : Controller {
 	protected RaycastHit hit;
 
 
+	protected Leasher leasher;
+
 	public override void Start ()
 	{
 		base.Start ();
 		prompt = PrefabManager.Instantiate("HumanPrompt", transform.position).GetComponent<ButtonPrompt>();
+		leasher = PrefabManager.Instantiate("Leasher", transform.position).GetComponent<Leasher>();
+		leasher.transform.parent = this.transform;
 	}
 
 	protected override void DoLogic(){
@@ -25,10 +29,33 @@ public class HumanController : Controller {
 			}
 			if (g.tag == "Dog"){
 				prompt.SetPosition(gameObject);
+				prompt.target = g;
 				promptSet = true;
 			}
 		}
 		if (!promptSet) prompt.ClearPosition();
+
+		ButtonInput();
+
+	}
+
+	void ButtonInput(){
+		GameObject target = prompt.target;
+		if (target == null) return;
+
+		if (inputDevice.Action1.WasPressed){
+
+			Debug.Log("press?");
+			//leash dog
+			if (target.tag == "Dog"){
+				Debug.Log("pressdog");
+				leasher.target = target;
+				target.tag = "LeashedDog";
+			}
+
+			prompt.FlashColor();
+
+		}
 	}
 
 
