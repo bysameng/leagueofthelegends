@@ -49,13 +49,15 @@ public class HumanController : Controller {
 		}
 		if (!promptSet) prompt.ClearPosition();
 
-		ButtonInput();
 
 		if (animating > 0){
 			animating -= Time.deltaTime;
 			currentInput = Vector3.zero;
+			animator.SetFloat("Run", 0f);
 			return;
 		}
+
+		ButtonInput();
 
 		if (movement.magnitude > .1f){
 			animator.SetFloat("Run", 1f);
@@ -67,22 +69,24 @@ public class HumanController : Controller {
 
 	void ButtonInput(){
 
-		GameObject target = prompt.target;
-		if (target == null) return;
-
 		if (inputDevice.Action1.WasPressed){
 
-			//leash dog
-			if (target.tag == "Dog"){
-				Debug.Log("leashed dog");
-				GlobalSoundEffects.main.PlayClipAtPoint("leash", target.transform.position, .8f);
-				leasher.target = target;
-				target.tag = "LeashedDog";
+			GameObject target = prompt.target;
+			if (target != null){
+
+				//leash dog
+				if (target.tag == "Dog"){
+					Debug.Log("leashed dog");
+					GlobalSoundEffects.main.PlayClipAtPoint("leash", target.transform.position, .8f);
+					leasher.target = target;
+					target.tag = "LeashedDog";
+				}
+
+				prompt.FlashColor();
 			}
 
-			prompt.FlashColor();
-
-			PickUpShit();
+			if (PickUpShit()){
+			}
 		}
 
 
@@ -95,21 +99,27 @@ public class HumanController : Controller {
 	}
 
 
-	void PickUpShit(){
-		Collider[] colliders = Physics.OverlapSphere(transform.position, 3f);
+	bool PickUpShit(){
+		Debug.Log("pickupshit");
+		bool foundShit = false;
+		Collider[] colliders = Physics.OverlapSphere(transform.position, 4f);
 		for(int i = 0; i < colliders.Length; i++){
 			GameObject g = colliders[i].gameObject;
-			if (g.tag != "Shit") continue;
-			Debug.Log("fuck");
-			Vector3 delta = g.transform.position - transform.position;
-			if (Vector3.Dot(transform.forward, delta) > .1f){
-				if (storedShits < maxShit){
-					storedShits++;
-					g.transform.parent = shits.transform;
-					g.transform.localPosition = Vector3.zero;
+			Debug.Log(g.name);
+			if (g.tag == "Shit") {
+				foundShit = true;
+				Debug.Log("fuck");
+				Vector3 delta = g.transform.position - transform.position;
+				if (Vector3.Dot(transform.forward, delta) > .1f){
+					if (storedShits < maxShit){
+						storedShits++;
+						g.transform.parent = shits.transform;
+						g.transform.localPosition = Vector3.zero;
+					}
 				}
 			}
 		}
+		return foundShit;
 	}
 
 
