@@ -24,37 +24,37 @@ public class Spin : MonoBehaviour {
 	
 	void Start() 
 	{
-		// Set up beginning scale
-		endScale = transform.localScale;
-		transform.localScale = Vector3.zero;
-		
-		startMarker = transform.position;
-		
-		startTime = Time.time;
-		endMarker = new Vector3 (transform.position.x, transform.position.y + yOffset, transform.position.z);
-		
-		journeyLength = Vector3.Distance(startMarker, endMarker);
+//		// Set up beginning scale
+//		endScale = transform.localScale;
+//		transform.localScale = Vector3.zero;
+//		
+//		startMarker = transform.position;
+//		
+//		startTime = Time.time;
+//		endMarker = new Vector3 (transform.position.x, transform.position.y + yOffset, transform.position.z);
+//		
+//		journeyLength = Vector3.Distance(startMarker, endMarker);
 		
 	}
 	
 	void Update() 
 	{
-		if (!finished)
-		{
-			float distCovered = (Time.time - startTime) * speed;
-			float fracJourney = distCovered / journeyLength;
-			transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
-			
-			transform.eulerAngles = Vector3.Lerp(startRot, endRot, fracJourney);
-			
-			if (lerpScale)
-				transform.localScale = Vector3.Lerp (startScale, endScale, fracJourney);
-			
-			if (transform.position == endMarker)
-			{
-				finished = true;		
-			}
-		}
+//		if (!finished)
+//		{
+//			float distCovered = (Time.time - startTime) * speed;
+//			float fracJourney = distCovered / journeyLength;
+//			transform.position = Vector3.Lerp(startMarker, endMarker, fracJourney);
+//			
+//			transform.eulerAngles = Vector3.Lerp(startRot, endRot, fracJourney);
+//			
+//			if (lerpScale)
+//				transform.localScale = Vector3.Lerp (startScale, endScale, fracJourney);
+//			
+//			if (transform.position == endMarker)
+//			{
+//				finished = true;		
+//			}
+//		}
 		
 	}
 	

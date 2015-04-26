@@ -69,6 +69,8 @@ public class DogController : Controller {
 
 	}
 
+
+
 	void Poop(){
 		currentShitPile = ShitManager.main.SpawnShit(transform.position - transform.forward/6f);
 	}

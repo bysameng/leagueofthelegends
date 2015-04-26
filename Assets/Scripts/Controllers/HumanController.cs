@@ -82,7 +82,9 @@ public class HumanController : Controller {
 
 			prompt.FlashColor();
 
+			PickUpShit();
 		}
+
 
 		if (inputDevice.Action1.WasPressed){
 			animator.SetFloat("Run", 0f);
@@ -94,12 +96,13 @@ public class HumanController : Controller {
 
 
 	void PickUpShit(){
-		Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+		Collider[] colliders = Physics.OverlapSphere(transform.position, 3f);
 		for(int i = 0; i < colliders.Length; i++){
 			GameObject g = colliders[i].gameObject;
 			if (g.tag != "Shit") continue;
+			Debug.Log("fuck");
 			Vector3 delta = g.transform.position - transform.position;
-			if (Vector3.Dot(transform.forward, delta) > .5f){
+			if (Vector3.Dot(transform.forward, delta) > .1f){
 				if (storedShits < maxShit){
 					storedShits++;
 					g.transform.parent = shits.transform;
