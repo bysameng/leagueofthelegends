@@ -5,6 +5,11 @@ using InControl;
 public class HumanController : Controller {
 
 
+	public int storedShits;
+	int maxShit = 20;
+
+	GameObject shits;
+
 	protected RaycastHit hit;
 
 
@@ -12,12 +17,19 @@ public class HumanController : Controller {
 
 	public Animator animator;
 
+	float animating;
+
 	public override void Start ()
 	{
 		base.Start ();
 		prompt = PrefabManager.Instantiate("HumanPrompt", transform.position).GetComponent<ButtonPrompt>();
 		leasher = PrefabManager.Instantiate("Leasher", transform.position).GetComponent<Leasher>();
 		leasher.transform.parent = this.transform;
+
+		shits = new GameObject("Shits");
+		shits.transform.parent = this.transform;
+		shits.transform.localPosition = Vector3.zero;
+		shits.transform.rotation = Quaternion.identity;
 	}
 
 	protected override void DoLogic(){
@@ -39,11 +51,22 @@ public class HumanController : Controller {
 
 		ButtonInput();
 
-		animator.speed = movement.magnitude;
+		if (animating > 0){
+			animating -= Time.deltaTime;
+			currentInput = Vector3.zero;
+			return;
+		}
+
+		if (movement.magnitude > .1f){
+			animator.SetFloat("Run", 1f);
+			animator.speed = movement.magnitude;
+		}
+		else animator.SetFloat("Run", 0f);
 	}
 
 
 	void ButtonInput(){
+
 		GameObject target = prompt.target;
 		if (target == null) return;
 
@@ -62,7 +85,27 @@ public class HumanController : Controller {
 		}
 
 		if (inputDevice.Action1.WasPressed){
+			animator.SetFloat("Run", 0f);
+			animating = 2f;
+			animator.speed = 2;
+			animator.SetTrigger("BendOver");
+		}
+	}
 
+
+	void PickUpShit(){
+		Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+		for(int i = 0; i < colliders.Length; i++){
+			GameObject g = colliders[i].gameObject;
+			if (g.tag != "Shit") continue;
+			Vector3 delta = g.transform.position - transform.position;
+			if (Vector3.Dot(transform.forward, delta) > .5f){
+				if (storedShits < maxShit){
+					storedShits++;
+					g.transform.parent = shits.transform;
+					g.transform.localPosition = Vector3.zero;
+				}
+			}
 		}
 	}
 
