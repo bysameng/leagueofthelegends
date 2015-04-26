@@ -91,7 +91,7 @@ public class GlobalSoundEffects : MonoBehaviour {
 		audio.pitch = pitch;
 		audio.rolloffMode = AudioRolloffMode.Logarithmic;
 		audio.Play();
-		audio.spatialBlend = 1f;
+		audio.spatialBlend = .5f;
 		Destroy(g, clip.length * 2f);
 		return audio;
 	}

@@ -52,6 +52,7 @@ public class HumanController : Controller {
 			//leash dog
 			if (target.tag == "Dog"){
 				Debug.Log("leashed dog");
+				GlobalSoundEffects.main.PlayClipAtPoint("leash", target.transform.position, .8f);
 				leasher.target = target;
 				target.tag = "LeashedDog";
 			}
