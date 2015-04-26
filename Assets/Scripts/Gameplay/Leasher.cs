@@ -32,14 +32,19 @@ public class Leasher : MonoBehaviour {
 		if (delta.magnitude > leashRadius){
 			Vector3 force = delta*100f;
 			target.GetComponent<Rigidbody>().AddForce(force);
+			GlobalSoundEffects.main.PlayClipAtPoint("stretch"+Random.Range(1, 8), transform.position, .4f);
 			durability -= force.magnitude;
 			if (durability <= 0){
 				target.GetComponent<Rigidbody>().AddForce(-force*4f);
+
+				ParticleController.main.ExplodeSparks(100, target.transform.position);
+				GlobalSoundEffects.main.PlayClipAtPoint("snap", transform.position);
 
 				if (target.tag == "LeashedDog")
 					target.tag = "Dog";
 
 				target = null;
+
 
 			}
 		}
