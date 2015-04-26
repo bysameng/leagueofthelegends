@@ -65,8 +65,8 @@ public class DogController : Controller {
 			shitCooldownTimer = shitCooldown;
 		}
 
-
 		animator.speed = movement.magnitude;
+
 	}
 
 	void Poop(){

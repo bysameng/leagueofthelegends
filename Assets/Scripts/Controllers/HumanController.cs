@@ -10,6 +10,8 @@ public class HumanController : Controller {
 
 	protected Leasher leasher;
 
+	public Animator animator;
+
 	public override void Start ()
 	{
 		base.Start ();
@@ -36,6 +38,8 @@ public class HumanController : Controller {
 		if (!promptSet) prompt.ClearPosition();
 
 		ButtonInput();
+
+		animator.speed = movement.magnitude;
 
 	}
 
