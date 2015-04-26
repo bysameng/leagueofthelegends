@@ -40,8 +40,8 @@ public class HumanController : Controller {
 		ButtonInput();
 
 		animator.speed = movement.magnitude;
-
 	}
+
 
 	void ButtonInput(){
 		GameObject target = prompt.target;
@@ -49,15 +49,18 @@ public class HumanController : Controller {
 
 		if (inputDevice.Action1.WasPressed){
 
-			Debug.Log("press?");
 			//leash dog
 			if (target.tag == "Dog"){
-				Debug.Log("pressdog");
+				Debug.Log("leashed dog");
 				leasher.target = target;
 				target.tag = "LeashedDog";
 			}
 
 			prompt.FlashColor();
+
+		}
+
+		if (inputDevice.Action1.WasPressed){
 
 		}
 	}

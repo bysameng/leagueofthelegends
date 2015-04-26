@@ -33,12 +33,17 @@ public class Leasher : MonoBehaviour {
 			Vector3 force = delta*100f;
 			target.GetComponent<Rigidbody>().AddForce(force);
 			durability -= force.magnitude;
-			SetStrength();
 			if (durability <= 0){
 				target.GetComponent<Rigidbody>().AddForce(-force*4f);
+
+				if (target.tag == "LeashedDog")
+					target.tag = "Dog";
+
 				target = null;
+
 			}
 		}
+		SetStrength();
 	}
 
 	void SetStrength(){

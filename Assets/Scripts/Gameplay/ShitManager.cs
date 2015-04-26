@@ -15,7 +15,6 @@ public class ShitManager : MonoBehaviour {
 	}
 
 	public ShitPile SpawnShit(Vector3 position){
-		Debug.Log("spawningshit");
 		ShitPile shitPile = PrefabManager.Instantiate("ShitPile", position).GetComponent<ShitPile>();
 		shits.Add(shitPile);
 		return shitPile;
