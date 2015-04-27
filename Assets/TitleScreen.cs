@@ -15,7 +15,7 @@ public class TitleScreen : MonoBehaviour {
 		v.AddAction(new SoundAction("inception", Vector3.zero));
 		v.AddAction(new SamAction(
 			()=>{
-			text = UIDrawer.main.DrawText(Vector3.zero, "T    H    E            L    E    A    G    U    E           O    F            T    H    E            L    E    G    E    N    D    S");
+			text = UIDrawer.main.DrawText(Vector3.zero, "T  H  E     L  E  A  G  U  E     O  F     T  H  E     L  E  G  E  N  D  S");
 			text.gameObject.AddComponent<TextWidth>();
 			fader = text.gameObject.AddComponent<ColorFader>();
 			fader.fullColor = Color.white;

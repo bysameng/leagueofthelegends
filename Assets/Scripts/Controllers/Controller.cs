@@ -24,6 +24,7 @@ public class Controller : MonoBehaviour {
 
 	protected ButtonPrompt prompt;
 
+	protected ShitMeter shitmeter;
 
 	// Use this for initialization
 	public virtual void Start () {

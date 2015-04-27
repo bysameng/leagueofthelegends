@@ -5,6 +5,7 @@ public class ButtonPrompt : MonoBehaviour {
 
 	Vector3Damper positionDamper;
 	public ColorFader fader;
+	public TextMesh text;
 
 	private readonly Vector3 hoverBelowPos = new Vector3(0f, -1f, 0f);
 	private readonly Vector3 offset = new Vector3(0f, 1.5f, 0f);
@@ -12,6 +13,7 @@ public class ButtonPrompt : MonoBehaviour {
 	private bool setPos = false;
 
 	public GameObject target;
+
 
 	void Awake(){
 		transform.rotation = Camera.main.transform.rotation;
@@ -22,16 +24,18 @@ public class ButtonPrompt : MonoBehaviour {
 		fader.fullColor = new Color(1f,1f,1f,0f);
 	}
 
-	public void SetPosition(GameObject objectToHover){
+	public void SetPosition(GameObject objectToHover, string text){
 		if (!setPos){
 			positionDamper.Value = objectToHover.transform.position + hoverBelowPos;
 			setPos = true;
 		}
+		this.text.text = text;
 		positionDamper.Target = objectToHover.transform.position + offset;
 		fader.fullColor = new Color(1f, 1f, 1f, .8f);
 	}
 
 	public void ClearPosition(){
+		this.text.text = "";
 		target = null;
 		fader.fullColor = new Color(1f,1f,1f,0f);
 		positionDamper.Target = transform.position + hoverBelowPos;

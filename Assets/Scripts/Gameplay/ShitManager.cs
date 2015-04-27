@@ -5,14 +5,22 @@ using System.Collections.Generic;
 public class ShitManager : MonoBehaviour {
 	public static ShitManager main;
 
-	public float shitCounter{get; private set;}
+	public int shitCounter{get; private set;}
+	int shitsToWin = 70;
+
+
+	private ShitMeter shitmeter;
 
 	private List<ShitPile> shits;
+
+	bool canwin = true;
 
 	void Awake(){
 		main = this;
 		shits = new List<ShitPile>();
+		shitmeter = PrefabManager.Instantiate("ShitMeter").GetComponentInChildren<ShitMeter>();
 	}
+
 
 	public ShitPile SpawnShit(Vector3 position){
 		ShitPile shitPile = PrefabManager.Instantiate("ShitPile", position).GetComponent<ShitPile>();
@@ -21,17 +29,25 @@ public class ShitManager : MonoBehaviour {
 	}
 
 
+
 	void Update(){
 		UpdateShitCounter();
 	}
 
 
 	void UpdateShitCounter(){
-		float counter = 0;
+		int counter = 0;
 		for(int i = 0; i < shits.Count; i++){
-			counter++;
+			if (shits[i].gameObject.activeSelf)
+				counter++;
 		}
 		shitCounter = counter;
+		shitmeter.SetShit(shitCounter/((float)shitsToWin));
+
+		if (shitCounter >= shitsToWin && canwin){
+			canwin = false;
+			Director.main.logic.GameOver();
+		}
 	}
 
 
